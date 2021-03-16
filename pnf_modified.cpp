@@ -1,7 +1,6 @@
 #include <chrono>
 #include <iostream>
 #include <cmath>
-#include <list>
 #include <conio.h>
 using namespace std;
 using namespace chrono;
@@ -14,9 +13,8 @@ int main()
 {
 	while (1)
 	{
-		int n, m, j = 2, g = 0, max = 0, count = 0, i;
+		int n, m, j = 2, g = 0, max = 0, count = 0, block = 0, pn;
 		bool c = 1;
-		list<int> l = {};
 
 		/*
 		n - sequence number of the searched prime number
@@ -25,18 +23,18 @@ int main()
 		g - l length
 		i - count for l
 		m - the number of first prime numbers sufficient to verify the numbers
-		ñ - 0/1 = prime/composite number
+		c - 0/1 = prime/composite number
 		max - the largest prime number which was needed
 		count - count of prime numbers already used
 		*/
 
 		cout << "Enter sequence number: ";
 		cin >> n;
+		int* l = new int[100000];
 
 		float start = get_time();
 		for (j; g != n; j++)
 		{
-			i = 0; 
 			if (j < 1000000) {
 				m = (g < 100) ? g : pow(g, 1 / 1.999);
 			}
@@ -44,25 +42,25 @@ int main()
 				m = count * 1.012;
 			}
 			c = 1;
-			for (int p : l)
+			for (int i = 0; i < m; i++)
 			{
-				i++;
-				if (i == m) {
-					break;
-				}
-				if (j % p == 0) {
+				if (j % l[i] == 0) {
 					c = 0;
-					if (p > max) {
-						max = p;
+					if (l[i] > max) {
+						max = l[i];
 						count++;
 					}
 					break;
 				}
 			}
+			if (c and g < 100000)
+			{
+				l[g + 1] = j;
+			}
 			if (c)
 			{
-				l.push_back(j);
 				g++;
+				pn = j;
 			}
 			if (j % 1000000 == 0) {
 				cout << "progress: " << g * 100 / n << "%, time: " << (get_time() - start) / 1000 << "s" << endl;
@@ -74,6 +72,6 @@ int main()
 		if (n % 10 == 1 and n % 100 != 11) { a = "st"; }
 		if (n % 10 == 2 and n % 100 != 12) { a = "nd"; }
 		if (n % 10 == 3 and n % 100 != 13) { a = "rd"; }
-		cout << n << a << " prime number: " << l.back() << ", time: " << t << "s" << endl;
+		cout << n << a << " prime number: " << pn << ", time: " << t << "s" << endl;
 	}
 }
