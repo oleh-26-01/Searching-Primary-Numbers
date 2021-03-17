@@ -5,7 +5,8 @@
 using namespace std;
 using namespace chrono;
 
-int get_time() {
+int get_time()
+{
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
@@ -13,24 +14,21 @@ int main()
 {
 	while (1)
 	{
-		int n, m, j = 2, g = 0, max = 0, count = 0, block = 0, pn;
-		bool c = 1;
+		int n, m, j = 2, g = 0, c = 1, max = 0, count = 0;
+		int *l = new int[100000];
+		cout << "Enter sequence number: ";
+		cin >> n;
 
 		/*
 		n - sequence number of the searched prime number
+		m - the number of first prime numbers sufficient to verify number
+		l - array of prime numbers
 		j - count of all numbers
-		l - list of prime numbers
 		g - l length
-		i - count for l
-		m - the number of first prime numbers sufficient to verify the numbers
 		c - 0/1 = prime/composite number
-		max - the largest prime number which was needed
-		count - count of prime numbers already used
+		max - the largest prime number which was used
+		count - the number of prime numbers that already used
 		*/
-
-		cout << "Enter sequence number: ";
-		cin >> n;
-		int* l = new int[100000];
 
 		float start = get_time();
 		for (j; g != n; j++)
@@ -53,25 +51,22 @@ int main()
 					break;
 				}
 			}
-			if (c and g < 100000)
-			{
+			if (c and g < 100001) {
 				l[g + 1] = j;
 			}
-			if (c)
-			{
+			if (c) {
 				g++;
-				pn = j;
 			}
 			if (j % 1000000 == 0) {
 				cout << "progress: " << g * 100 / n << "%, time: " << (get_time() - start) / 1000 << "s" << endl;
 			}
 		}
-		float t = (float(get_time()) - start) / 1000;
+		float t = (get_time() - start) / 1000;
 		system("cls");
 		string a = "th";
 		if (n % 10 == 1 and n % 100 != 11) { a = "st"; }
 		if (n % 10 == 2 and n % 100 != 12) { a = "nd"; }
 		if (n % 10 == 3 and n % 100 != 13) { a = "rd"; }
-		cout << n << a << " prime number: " << pn << ", time: " << t << "s" << endl;
+		cout << n << a << " prime number: " << j - 1 << ", time: " << t << "s" << endl;
 	}
 }
